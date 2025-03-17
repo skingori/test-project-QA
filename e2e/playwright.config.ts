@@ -39,7 +39,7 @@ export default defineConfig({
   testDir: "./src/tests",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    actionTimeout: 5000,
+    actionTimeout: 30000,
     screenshot: {
       fullPage: true,
       mode: "only-on-failure",

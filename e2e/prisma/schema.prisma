@@ -1,50 +1,56 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = "file:./test.db"
+  provider = "sqlite"
+  url      = "file:./test.db"
 }
 
 model AppUser {
-    id                         BigInt   @default(autoincrement())
-    is_deleted                 Boolean  @default(false)
-    username                   String   @unique
-    firstname                  String
-    lastname                   String
-    password                   String
-    email                      String
-    nonlocked                  Boolean
-    enabled                    Boolean
-    last_time_password_updated DateTime @default("1970-01-01T00:00:00.000Z")
-    password_never_expires     Boolean  @default(false)
-    cannot_change_password     Boolean  @default(false)
+  id                         BigInt        @id
+  is_deleted                 Boolean       @default(false)
+  username                   String        @unique
+  firstname                  String
+  lastname                   String
+  password                   String
+  email                      String
+  nonlocked                  Boolean
+  enabled                    Boolean
+  last_time_password_updated DateTime      @default(dbgenerated("'1970-01-01 00:00:00 +00:00'"))
+  password_never_expires     Boolean       @default(false)
+  cannot_change_password     Boolean       @default(false)
+  UserPhone                  UserPhone[]
+  roles                      AppUserRole[]
 
-    roles AppUserRole[]
+  @@map("appuser")
+}
 
-    @@id([id])
-    @@map("appuser")
+model UserPhone {
+  id             Int     @id @default(autoincrement())
+  userId         BigInt
+  phoneCountryId Int
+  phone          String
+  orderIndex     Int
+  AppUser        AppUser @relation(fields: [userId], references: [id], onDelete: Restrict) // Modify this if needed
 }
 
 model Role {
-    id          BigInt  @default(autoincrement())
-    name        String  @unique
-    description String
-    is_disabled Boolean @default(false)
+  id          BigInt        @id
+  name        String        @unique
+  description String
+  is_disabled Boolean       @default(false)
+  appUsers    AppUserRole[]
 
-    appUsers AppUserRole[]
-
-    @@id([id])
-    @@map("role")
+  @@map("role")
 }
 
 model AppUserRole {
-    appuser_id BigInt
-    role_id    BigInt
-    AppUser    AppUser @relation(fields: [appuser_id], references: [id])
-    Role       Role    @relation(fields: [role_id], references: [id])
+  appuser_id BigInt
+  role_id    BigInt
+  Role       Role    @relation(fields: [role_id], references: [id])
+  AppUser    AppUser @relation(fields: [appuser_id], references: [id])
 
-    @@id([appuser_id, role_id])
-    @@map("appuser_role")
+  @@id([appuser_id, role_id])
+  @@map("appuser_role")
 }

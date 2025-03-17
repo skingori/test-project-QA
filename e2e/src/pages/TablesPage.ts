@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 
-export default class LoginPage {
+export default class TablePage {
   readonly errorAlert;
   readonly homePage;
   readonly page: Page;
@@ -19,7 +19,7 @@ export default class LoginPage {
   }
 
   public async assertCurrentPage() {
-    await expect(this.page).toHaveURL("/login");
+    await expect(this.page).toHaveURL("/tables");
   }
 
   public async assertErrorAlert(message: string) {

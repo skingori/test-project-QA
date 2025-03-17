@@ -32,15 +32,13 @@ CREATE TABLE "AppUserRole" (
     CONSTRAINT "AppUserRole_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "Role" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-CREATE TABLE "UserPhone" (
-    "id" int NOT NULL AUTO_INCREMENT,
-    "user_id" bigint NOT NULL,
-    "phone_country_id" int NOT NULL,
-    "phone" varchar(20) NOT NULL,
-    "order_index" int NOT NULL,
-
-    PRIMARY KEY ("id"),
-    CONSTRAINT "AppUserRole_appuser_id_fkey" FOREIGN KEY ("appuser_id") REFERENCES "AppUser" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+CREATE TABLE IF NOT EXISTS "UserPhone" (
+    "id" INTEGER PRIMARY KEY, -- SQLite requires this for auto-increment
+    "user_id" BIGINT NOT NULL,
+    "phone_country_id" INT NOT NULL,
+    "phone" TEXT NOT NULL, -- SQLite uses TEXT instead of VARCHAR
+    "order_index" INT NOT NULL,
+    FOREIGN KEY ("user_id") REFERENCES "AppUser" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 

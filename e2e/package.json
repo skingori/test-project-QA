@@ -5,6 +5,8 @@
     "lint": "eslint .",
     "lint-staged": "lint-staged",
     "test:ui": "playwright test --ui",
+    "test:run": "playwright test",
+    "test:debug": "playwright test --headed --debug",
     "test:report": "playwright show-report",
     "prepare": "cd .. && husky e2e/.husky",
     "generate": "npx prisma generate",

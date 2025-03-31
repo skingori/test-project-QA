@@ -10,6 +10,21 @@ export interface Book {
   website: string;
 }
 
+export interface getBooksResponse {
+  books: [
+    {
+      author: string;
+      description: string;
+      isbn: string;
+      pages: 0;
+      publish_date: string; // ISO 8601 format
+      publisher: string;
+      subTitle: string;
+      title: string;
+      website: string;
+    },
+  ];
+}
 export interface UserResponse {
   books: Book[];
   userID: string;
@@ -34,7 +49,11 @@ export interface ErrorResponse {
 }
 
 export interface BooksResponse {
-  isbn: string;
+  books: [
+    {
+      isbn: string;
+    },
+  ];
 }
 
 export interface UserRequest {

@@ -7,16 +7,16 @@ export function generateBookData(): BookRequest {
   return {
     collectionOfIsbns: [
       {
-        isbn: faker.string.uuid(),
+        isbn: process.env.ISBN ?? faker.string.uuid(),
       },
     ],
-    userId: faker.string.uuid(),
+    userId: process.env.USER_ID ?? faker.string.uuid(),
   };
 }
 
 export function generateLoginData(): UserRequest {
   return {
-    password: DEFAULT_PASSWORD,
+    password: faker.internet.password() + DEFAULT_PASSWORD,
     userName: faker.internet.userName(),
   };
 }

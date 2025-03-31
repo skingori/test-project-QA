@@ -1,9 +1,6 @@
 import { expect, test } from "@playwright/test";
-import { PrismaClient } from "@prisma/client";
 
-import { cleanDatabase, seedDatabase } from "../helpers/dbHelpers";
-
-const prisma = new PrismaClient(); // Initialize Prisma client inside the test
+import { cleanDatabase, prisma, seedDatabase } from "../helpers/dbHelpers";
 
 test.describe("Database Seeding and Verification in Tests", () => {
   test.beforeAll(async () => {

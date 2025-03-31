@@ -41,6 +41,7 @@ export default class LoginPage {
   public async clickSubmitButton() {
     await this.submitButton.click();
   }
+
   public async fillPassword(password: string) {
     await this.passwordInputField.fill(password);
   }
@@ -49,5 +50,11 @@ export default class LoginPage {
   }
   public async goto() {
     await this.page.goto("/login");
+    await this.scrollToBottom();
+  }
+  public async scrollToBottom() {
+    await this.page.evaluate(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    });
   }
 }

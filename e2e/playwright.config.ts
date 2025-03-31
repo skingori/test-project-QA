@@ -39,7 +39,7 @@ export default defineConfig({
   testDir: "./src/tests",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    actionTimeout: 30000,
+    actionTimeout: parseInt(process.env.DEFAULT_TIMEOUT ?? "30000", 10),
     screenshot: {
       fullPage: true,
       mode: "only-on-failure",

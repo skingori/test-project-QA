@@ -2,34 +2,22 @@
 /* eslint-disable playwright/no-conditional-expect */
 import axios from "axios";
 
-import { ERROR_MESSAGES } from "../../constants/constants";
+import { ERROR_MESSAGES, SHORT_PASSWORD } from "../../constants/constants";
 import { generateLoginData } from "../../data/generateData";
 import { createUserAccount } from "../../requests/makeRequests";
 import { expect, SignupTest as test } from "../fixtures/registerPage.fixture";
 
-let loginUsername: string;
-
-async function registerUser() {
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
-  const response = await createUserAccount();
-  if ("username" in response.data) {
-    const { username } = response.data;
-    loginUsername = username;
-  } else {
-    throw new Error("Failed to create user account");
-  }
-}
-
 test.describe("Registration Page Tests", () => {
   test.beforeEach(async ({ SignupPage }) => {
+    await createUserAccount();
     await SignupPage.goto();
   });
 
   test("should show an error when firstname is empty", async ({ SignupPage }) => {
     await SignupPage.fillFirstName("");
-    await SignupPage.fillLastName("Doe");
-    await SignupPage.fillUsername("johndoe");
-    await SignupPage.fillPassword("password123");
+    await SignupPage.fillLastName(process.env.USERNAME!);
+    await SignupPage.fillUsername(process.env.USERNAME!);
+    await SignupPage.fillPassword(process.env.PASSWORD!);
     await SignupPage.submitButton.click();
     await SignupPage.assertFisrtNameBoarderErrorColor();
   });
@@ -37,7 +25,7 @@ test.describe("Registration Page Tests", () => {
 
 test.describe("API registration tests", () => {
   test.beforeAll(async () => {
-    await registerUser();
+    await createUserAccount();
   });
   test("should register a new user successfully", async () => {
     const user = generateLoginData();
@@ -47,7 +35,8 @@ test.describe("API registration tests", () => {
 
   test("Should not create user with an existing username", async () => {
     const user = generateLoginData();
-    user.userName = loginUsername;
+    user.userName = process.env.USERNAME!;
+    user.password = process.env.PASSWORD!;
     try {
       await createUserAccount(user);
       expect(false).toBeTruthy();
@@ -63,7 +52,7 @@ test.describe("API registration tests", () => {
 
   test("Should not create user with a short password", async () => {
     const user = generateLoginData();
-    user.password = "123";
+    user.password = SHORT_PASSWORD;
     try {
       await createUserAccount(user);
       expect(false).toBeTruthy();
@@ -76,7 +65,7 @@ test.describe("API registration tests", () => {
       expect(status).toBe(400);
       expect(error.response?.data).toEqual({
         code: "1300",
-        message: ERROR_MESSAGES.SHORT_PASSWORD,
+        message: ERROR_MESSAGES.SHORT_PASSWORD_ERROR,
       });
     }
   });

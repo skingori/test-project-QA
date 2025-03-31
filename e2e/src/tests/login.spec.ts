@@ -1,18 +1,9 @@
-import { DEFAULT_PASSWORD, ERROR_MESSAGES } from "../../constants/constants";
+import { DEFAULT_PASSWORD, ERROR_MESSAGES, SHORT_PASSWORD } from "../../constants/constants";
 import { createUserAccount } from "../../requests/makeRequests";
 import { loginTest as test } from "../fixtures/loginPage.fixture";
 
-let loginUsername: string;
-
 async function registerUser() {
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
-  const response = await createUserAccount();
-  if ("username" in response.data) {
-    const { username } = response.data;
-    loginUsername = username;
-  } else {
-    throw new Error("Failed to create user account");
-  }
+  await createUserAccount();
 }
 
 test.describe("Login Page Tests", () => {
@@ -22,15 +13,15 @@ test.describe("Login Page Tests", () => {
   });
 
   test("Login with valid credentials", async ({ LoginPage }) => {
-    await LoginPage.fillUsername(loginUsername);
-    await LoginPage.fillPassword(DEFAULT_PASSWORD);
+    await LoginPage.fillUsername(process.env.USERNAME!);
+    await LoginPage.fillPassword(process.env.PASSWORD!);
     await LoginPage.clickSubmitButton();
-    await LoginPage.assertHomePage(loginUsername);
+    await LoginPage.assertHomePage(process.env.USERNAME!);
   });
 
   test("Login with invalid credentials", async ({ LoginPage }) => {
-    await LoginPage.fillUsername(loginUsername);
-    await LoginPage.fillPassword("invalidpassword");
+    await LoginPage.fillUsername(process.env.USERNAME!);
+    await LoginPage.fillPassword(process.env.PASSWORD! + SHORT_PASSWORD);
     await LoginPage.clickSubmitButton();
     await LoginPage.assertErrorAlert(ERROR_MESSAGES.INVALID_CREDENTIALS);
   });
@@ -42,7 +33,7 @@ test.describe("Login Page Tests", () => {
   });
 
   test("Login with empty password", async ({ LoginPage }) => {
-    await LoginPage.fillUsername(loginUsername);
+    await LoginPage.fillUsername(process.env.USERNAME!);
     await LoginPage.clickSubmitButton();
     await LoginPage.assertPasswordBoarderErrorColor();
   });

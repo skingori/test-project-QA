@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 
-export default class TablePage {
+export default class BooksPage {
   readonly errorAlert;
   readonly homePage;
   readonly page: Page;
@@ -9,7 +9,6 @@ export default class TablePage {
   readonly usernameInputField;
 
   constructor(page: Page) {
-    // https://demoqa.com/login
     this.page = page;
     this.usernameInputField = page.locator('input[id="userName"]');
     this.passwordInputField = page.locator('input[id="password"]');
@@ -48,6 +47,6 @@ export default class TablePage {
     await this.usernameInputField.fill(username);
   }
   public async goto() {
-    await this.page.goto("/login");
+    await this.page.goto("/profile");
   }
 }

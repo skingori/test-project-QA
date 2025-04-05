@@ -8,9 +8,8 @@ import { createUserAccount } from "../../requests/makeRequests";
 import { expect, SignupTest as test } from "../fixtures/registerPage.fixture";
 
 test.describe("Registration Page Tests", () => {
-  test.beforeEach(async ({ SignupPage }) => {
+  test.beforeEach(async () => {
     await createUserAccount();
-    await SignupPage.goto();
   });
 
   test("should show an error when firstname is empty", async ({ SignupPage }) => {

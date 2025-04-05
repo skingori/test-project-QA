@@ -7,9 +7,8 @@ async function registerUser() {
 }
 
 test.describe("Login Page Tests", () => {
-  test.beforeEach(async ({ LoginPage }) => {
+  test.beforeEach(async () => {
     await registerUser();
-    await LoginPage.goto();
   });
 
   test("Login with valid credentials", async ({ LoginPage }) => {

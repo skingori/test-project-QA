@@ -1,6 +1,3 @@
-/* eslint-disable playwright/no-conditional-in-test */
-/* eslint-disable playwright/no-conditional-expect */
-
 import { generateLoginData } from "../../data/generateData";
 import { createUserAccount, generateTokenRequest, getBooksRequest, makeBookRequest } from "../../requests/makeRequests";
 import { expect, BooksTests as test } from "../fixtures/bookPage.fixture";
